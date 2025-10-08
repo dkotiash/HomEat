@@ -1,7 +1,7 @@
 package com.example.demo;
 
-public class ToDoEntry {
-    public ToDoEntry(String title, String description) {
+public class HomEatEntry {
+    public HomEatEntry(String title, String description) {
         this.title = title;
         this.description = description;
     }

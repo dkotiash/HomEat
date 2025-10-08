@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class ToDoEntryController {
+public class HomEatEntryController {
 
     @GetMapping("/todos1")
-    public List<ToDoEntry> getTodos(){
+    public List<HomEatEntry> getTodos(){
         return List.of(
-                new ToDoEntry("Title 1", "Description 1"),
-                new ToDoEntry("Title 2", "Description 2"),
-                new ToDoEntry("Title 3", "Description 3")
+                new HomEatEntry("Title 1", "Description 1"),
+                new HomEatEntry("Title 2", "Description 2"),
+                new HomEatEntry("Title 3", "Description 3")
         );
 
     }
