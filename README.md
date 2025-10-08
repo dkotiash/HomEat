@@ -1,6 +1,6 @@
 # HomEat
 
-![Logo](/Users/kotyash_misha/Downloads/HomEat.jpg)
+<img alt="Logo" height="250" src="https://videos.openai.com/vg-assets/assets%2Ftask_01k71q6c5tfyet7nr3jz2bg42w%2F1759920777_img_1.webp?st=2025-10-08T09%3A27%3A46Z&se=2025-10-14T10%3A27%3A46Z&sks=b&skt=2025-10-08T09%3A27%3A46Z&ske=2025-10-14T10%3A27%3A46Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=2905dc6d-d44b-4668-b712-e8787ddb94c0&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=ggIkNyMEv8t33%2FcFhiM8S%2BTuaHWYkTDjj2m8iNEiD3E%3D&az=oaivgprodscus" width="250"/>
 
 **HomEat** ist eine Webanwendung, die Nutzer:innen dabei unterstützt, spontan passende Rezepte zu finden – besonders dann, wenn man nicht weiß, was man kochen oder essen möchte.
 Die App bietet eine einfache Möglichkeit, nach Rezepten zu suchen, eigene Rezepte zu erstellen, diese zu bearbeiten, zu speichern und als Favoriten zu markieren.
