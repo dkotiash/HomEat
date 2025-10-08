@@ -1,5 +1,6 @@
 # HomEat
-![Logo](./public/logo.png)
+
+![Logo](/Users/kotyash_misha/Downloads/HomEat.jpg)
 
 **HomEat** ist eine Webanwendung, die Nutzer:innen dabei unterstützt, spontan passende Rezepte zu finden – besonders dann, wenn man nicht weiß, was man kochen oder essen möchte.
 Die App bietet eine einfache Möglichkeit, nach Rezepten zu suchen, eigene Rezepte zu erstellen, diese zu bearbeiten, zu speichern und als Favoriten zu markieren.
