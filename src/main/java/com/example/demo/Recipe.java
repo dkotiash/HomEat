@@ -3,7 +3,7 @@ package com.example.demo;
 public class Recipe {
     private String name;
     private String description;
-    private Ingredients[] ingredients;
+    private Ingredients[] ingredients; //list
 
     public Recipe(String name, String description, Ingredients[] ingredients) {
         this.name = name;
