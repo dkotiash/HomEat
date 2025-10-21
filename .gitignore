@@ -13,3 +13,7 @@ vue-app/node_modules/
 node_modules/
 frontend/node_modules/
 vue-app/node_modules/
+.idea/
+node_modules/
+frontend/node_modules/
+vue-app/node_modules/
