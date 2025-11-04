@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 public class HomEatEntryController {
 
-    @GetMapping("/todos1")
+    @GetMapping("/HomEat")
     public List<HomEatEntry> getTodos(){
         return List.of(
                 new HomEatEntry("Title 1", "Description 1"),
