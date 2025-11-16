@@ -14,11 +14,11 @@ import java.util.List;
 public class HomEatEntryController {
 
     @GetMapping("/HomEat")
-    public List<HomEatEntry> getTodos(){
+    public List<Recipe> getRecipes(){
         return List.of(
-                new HomEatEntry("Title 1", "Description 1"),
-                new HomEatEntry("Title 2", "Description 2"),
-                new HomEatEntry("Title 3", "Description 3")
+                new Recipe("Title 1", "Description 1", List.of() ),
+                new Recipe("Title 1", "Description 1", List.of() ),
+                new Recipe("Title 1", "Description 1", List.of() )
         );
 
     }

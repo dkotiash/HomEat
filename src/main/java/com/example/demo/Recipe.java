@@ -1,22 +1,59 @@
 package com.example.demo;
 
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
 public class Recipe {
-    private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
     private String description;
-    private Ingredients[] ingredients; //list
 
-    public Recipe(String name, String description, Ingredients[] ingredients) {
-        this.name = name;
+    @ElementCollection
+    private List<Ingredients> ingredients = new ArrayList<>();
+
+    public Recipe() {
+    }
+
+    public Recipe(String title, String description, List<Ingredients> ingredients) {
+        this.title = title;
         this.description = description;
-        this.ingredients = ingredients;
+        this.ingredients = ingredients != null ? ingredients : new ArrayList<>();
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", ingredients=" + ingredients +
+                '}';
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -27,11 +64,11 @@ public class Recipe {
         this.description = description;
     }
 
-    public Ingredients[] getIngredients() {
+    public List<Ingredients> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Ingredients[] ingredients) {
+    public void setIngredients(List<Ingredients> ingredients) {
         this.ingredients = ingredients;
     }
 }
