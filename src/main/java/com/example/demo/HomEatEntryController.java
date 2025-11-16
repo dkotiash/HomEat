@@ -1,8 +1,7 @@
 package com.example.demo;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,6 +12,9 @@ import java.util.List;
 @RestController
 public class HomEatEntryController {
 
+    @Autowired
+    HomEatService service;
+
     @GetMapping("/HomEat")
     public List<Recipe> getRecipes(){
         return List.of(
@@ -21,5 +23,11 @@ public class HomEatEntryController {
                 new Recipe("Title 1", "Description 1", List.of() )
         );
 
+    }
+
+    @CrossOrigin
+    @PostMapping("/things")
+    public Recipe createRecipe(@RequestBody Recipe recipe) {
+        return service.save(recipe);
     }
 }
