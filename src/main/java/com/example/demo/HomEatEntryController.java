@@ -26,7 +26,7 @@ public class HomEatEntryController {
     }
 
     @CrossOrigin
-    @PostMapping("/things")
+    @PostMapping("/HomEat")
     public Recipe createRecipe(@RequestBody Recipe recipe) {
         return service.save(recipe);
     }
