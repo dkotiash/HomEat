@@ -2,4 +2,4 @@
 .gradle/
 build/
 .idea/
-.misc/
+.misc/.DS_Store
