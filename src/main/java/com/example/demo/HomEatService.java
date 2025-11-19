@@ -3,6 +3,8 @@ package com.example.demo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class HomEatService {
 
@@ -16,4 +18,8 @@ public class HomEatService {
     public Recipe get(Long id) {
         return repo.findById(id).orElseThrow(RuntimeException::new);
     }
+    public List<Recipe> getAll() {
+        return repo.findAll();
+    }
+
 }

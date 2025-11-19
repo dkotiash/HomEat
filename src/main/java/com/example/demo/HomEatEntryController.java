@@ -3,6 +3,7 @@ package com.example.demo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = {
@@ -16,13 +17,8 @@ public class HomEatEntryController {
     HomEatService service;
 
     @GetMapping("/HomEat")
-    public List<Recipe> getRecipes(){
-        return List.of(
-                new Recipe("Title 1", "Description 1", List.of() ),
-                new Recipe("Title 1", "Description 1", List.of() ),
-                new Recipe("Title 1", "Description 1", List.of() )
-        );
-
+    public List<Recipe> getRecipes() {
+        return service.getAll();
     }
 
     @CrossOrigin
