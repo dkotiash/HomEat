@@ -1,8 +1,14 @@
 package com.example.demo;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class Ingredients {
     private String name;
     private String quantity;
+
+    public Ingredients() {
+    }
 
     public Ingredients(String name, String quantity) {
         this.name = name;
