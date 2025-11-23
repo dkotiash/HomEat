@@ -2,7 +2,6 @@ package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,15 +12,17 @@ import java.util.List;
 @RestController
 public class HomEatEntryController {
 
-    @Autowired
-    HomEatService service;
+    private final HomEatService service;
+
+    public HomEatEntryController(HomEatService service) {
+        this.service = service;
+    }
 
     @GetMapping("/HomEat")
     public List<Recipe> getRecipes() {
         return service.getAll();
     }
 
-    @CrossOrigin
     @PostMapping("/HomEat")
     public Recipe createRecipe(@RequestBody Recipe recipe) {
         return service.save(recipe);

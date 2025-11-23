@@ -11,6 +11,10 @@ public class HomEatService {
     @Autowired
     HomEatRepository repo;
 
+    public HomEatService(HomEatRepository repo) {
+        this.repo = repo;
+    }
+
     public Recipe save(Recipe recipe) {
         return repo.save(recipe);
     }
