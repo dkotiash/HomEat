@@ -4,6 +4,7 @@ import com.example.demo.image.dto.ImageResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,7 +25,6 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    // 1) Upload (опціонально прив’язати до рецепта ?recipeId=)
     @PostMapping(value = "/images",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,12 +52,12 @@ public class ImageController {
         );
     }
 
-    // 2) Видача байтів
+    // важливо: транзакція активна у момент доступу до LAZY поля data
+    @Transactional(readOnly = true)
     @GetMapping("/images/{id}")
     public ResponseEntity<byte[]> serve(@PathVariable Long id) {
         RecipeImage img = imageService.get(id);
 
-        // set Cache-Control header manually to avoid static/non-static mismatch
         String cacheValue = "max-age=" + Duration.ofDays(30).getSeconds() + ", no-transform";
 
         return ResponseEntity.ok()
@@ -67,10 +67,9 @@ public class ImageController {
                                 : img.getFilename()) + "\"")
                 .header(HttpHeaders.CACHE_CONTROL, cacheValue)
                 .contentType(MediaType.parseMediaType(img.getContentType()))
-                .body(img.getData());
+                .body(img.getData());  // ← тепер без LazyInitializationException
     }
 
-    // 3) Видалення
     @DeleteMapping("/images/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         imageService.delete(id);
