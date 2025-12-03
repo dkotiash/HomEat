@@ -2,10 +2,12 @@ package com.example.demo.image;
 
 import com.example.demo.recipe.Recipe;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 public class RecipeImage {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,16 +17,18 @@ public class RecipeImage {
     private long size;
 
     @Lob
-    @Column(length = 10485760)
+    @Basic(fetch = FetchType.LAZY)
+    @JsonIgnore                // <-- не віддаємо байти в JSON
     private byte[] data;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
-    @JsonBackReference
+    @JsonBackReference         // <-- розриває циклічну серіалізацію
     private Recipe recipe;
 
     public RecipeImage() {}
 
+    // getters/setters
     public Long getId() { return id; }
     public String getFilename() { return filename; }
     public void setFilename(String filename) { this.filename = filename; }
