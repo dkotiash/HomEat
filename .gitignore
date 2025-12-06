@@ -3,3 +3,5 @@
 build/
 .idea/
 .misc/.DS_Store
+.vscode/
+application-local.properties

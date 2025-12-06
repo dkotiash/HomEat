@@ -1,9 +1,10 @@
 package com.example.demo;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.dto.RecipeDto;
+import com.example.demo.dto.RecipeMapper;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import com.example.demo.recipe.Recipe;
 
 @CrossOrigin(origins = {
@@ -20,8 +21,10 @@ public class HomEatEntryController {
     }
 
     @GetMapping("/HomEat")
-    public List<Recipe> getRecipes() {
-        return service.getAll();
+    public List<RecipeDto> getRecipes() {
+        return service.getAll().stream()
+                .map(RecipeMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/HomEat")

@@ -1,4 +1,4 @@
-package com.example.demo.image.dto;
+package com.example.demo.dto;
 
 public class ImageResponse {
     private Long id;

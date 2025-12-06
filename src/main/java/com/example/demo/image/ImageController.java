@@ -1,6 +1,5 @@
 package com.example.demo.image;
 
-import com.example.demo.image.dto.ImageResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.example.demo.dto.ImageResponse;
 
 import java.time.Duration;
 
@@ -60,14 +61,24 @@ public class ImageController {
 
         String cacheValue = "max-age=" + Duration.ofDays(30).getSeconds() + ", no-transform";
 
+        String safeFilename = (img.getFilename() == null || img.getFilename().isBlank())
+                ? ("image-" + id)
+                : img.getFilename();
+
+        String safeContentType = (img.getContentType() == null || img.getContentType().isBlank())
+                ? MediaType.APPLICATION_OCTET_STREAM_VALUE
+                : img.getContentType();
+
+        byte[] data = img.getData();
+        if (data == null || data.length == 0) {
+            return ResponseEntity.notFound().build();
+        }
+
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "inline; filename=\"" + (img.getFilename() == null
-                                ? ("image-" + id)
-                                : img.getFilename()) + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + safeFilename + "\"")
                 .header(HttpHeaders.CACHE_CONTROL, cacheValue)
-                .contentType(MediaType.parseMediaType(img.getContentType()))
-                .body(img.getData());  // ← тепер без LazyInitializationException
+                .contentType(MediaType.parseMediaType(safeContentType))
+                .body(data);
     }
 
     @DeleteMapping("/images/{id}")
