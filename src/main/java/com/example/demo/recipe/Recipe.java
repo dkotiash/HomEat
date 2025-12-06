@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Recipe {
@@ -21,10 +23,10 @@ public class Recipe {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Ingredients> ingredients = new ArrayList<>();
 
-    // Залишаємо LAZY, щоб уникати MultipleBagFetchException
+    // Використовуємо Set, щоб Hibernate не бачив другу "bag"-колекцію (уникаємо MultipleBagFetchException)
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<RecipeImage> images = new ArrayList<>();
+    private Set<RecipeImage> images = new LinkedHashSet<>();
 
     public Recipe() {}
 
@@ -42,6 +44,6 @@ public class Recipe {
     public void setDescription(String description) { this.description = description; }
     public List<Ingredients> getIngredients() { return ingredients; }
     public void setIngredients(List<Ingredients> ingredients) { this.ingredients = ingredients; }
-    public List<RecipeImage> getImages() { return images; }
-    public void setImages(List<RecipeImage> images) { this.images = images; }
+    public Set<RecipeImage> getImages() { return images; }
+    public void setImages(Set<RecipeImage> images) { this.images = images; }
 }
