@@ -31,4 +31,9 @@ public class HomEatEntryController {
     public Recipe createRecipe(@RequestBody Recipe recipe) {
         return service.save(recipe);
     }
+
+    @DeleteMapping("/HomEat/{id}")
+    public void deleteRecipe(@PathVariable Long id) {
+        service.delete(id); // Das ruft die Methode auf, die wir gerade erstellt haben
+    }
 }

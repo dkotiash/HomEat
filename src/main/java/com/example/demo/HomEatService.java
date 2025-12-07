@@ -26,5 +26,8 @@ public class HomEatService {
     public List<Recipe> getAll() {
         return repo.findAll();
     }
+    public void delete(Long id) {
+        repo.deleteById(id);
+    }
 
 }
