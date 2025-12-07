@@ -27,7 +27,8 @@ public class RecipeMapper {
                 recipe.getTitle(),
                 recipe.getDescription(),
                 ingDtos,
-                imgResponses
+                imgResponses,
+                recipe.getOwnerId() // <--- NEU: Wir geben die ID an das DTO weiter
         );
     }
 

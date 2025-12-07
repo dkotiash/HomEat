@@ -19,6 +19,20 @@ public class Recipe {
     private String title;
     @Column(length = 4000)
     private String description;
+    // --- NEU: Hier speichern wir, wem das Rezept gehört ---
+    private String ownerId;
+    // -----------------------------------------------------
+
+    // ... deine Zutaten und Bilder Listen ...
+
+    // --- WICHTIG: Getter und Setter für ownerId nicht vergessen! ---
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Ingredients> ingredients = new ArrayList<>();
@@ -29,12 +43,6 @@ public class Recipe {
     private Set<RecipeImage> images = new LinkedHashSet<>();
 
     public Recipe() {}
-
-    public Recipe(String title, String description, List<Ingredients> ingredients) {
-        this.title = title;
-        this.description = description;
-        if (ingredients != null) this.ingredients = ingredients;
-    }
 
     // getters/setters
     public Long getId() { return id; }
