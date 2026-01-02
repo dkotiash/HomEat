@@ -17,39 +17,48 @@ public class Recipe {
     private Long id;
 
     private String title;
+
     @Column(length = 4000)
     private String description;
-    // --- NEU: Hier speichern wir, wem das Rezept gehört ---
+
     private String ownerId;
-    // -----------------------------------------------------
 
-    // ... deine Zutaten und Bilder Listen ...
-
-    // --- WICHTIG: Getter und Setter für ownerId nicht vergessen! ---
-    public String getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
-    }
+    // --- NEU: HIER DAS FELD FÜR LIKES HINZUFÜGEN ---
+    // Wir setzen es standardmäßig auf 0, damit es nicht null ist
+    private Integer likes = 0;
+    // -----------------------------------------------
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Ingredients> ingredients = new ArrayList<>();
 
-    // Використовуємо Set, щоб Hibernate не бачив другу "bag"-колекцію (уникаємо MultipleBagFetchException)
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<RecipeImage> images = new LinkedHashSet<>();
 
     public Recipe() {}
 
-    // getters/setters
+    // --- NEU: GETTER UND SETTER FÜR LIKES NICHT VERGESSEN ---
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
+    }
+    // --------------------------------------------------------
+
+    // ... deine existierenden Getter/Setter ...
     public Long getId() { return id; }
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public String getOwnerId() { return ownerId; }
+    public void setOwnerId(String ownerId) { this.ownerId = ownerId; }
+    public void setId(Long id) {
+        this.id = id;
+    }
     public List<Ingredients> getIngredients() { return ingredients; }
     public void setIngredients(List<Ingredients> ingredients) { this.ingredients = ingredients; }
     public Set<RecipeImage> getImages() { return images; }
