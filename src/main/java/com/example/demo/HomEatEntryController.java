@@ -47,8 +47,9 @@ public class HomEatEntryController {
 
     @PostMapping("/HomEat/{id}/like")
     public RecipeDto updateLikes(@PathVariable Long id, @RequestParam boolean increase) {
-        Recipe updated = service.updateLikes(id, increase);
-        return RecipeMapper.toDto(updated);
+        // WICHTIG: Kein RecipeMapper.toDto(...) mehr hier!
+        // Der Service gibt schon das fertige DTO zurück.
+        return service.updateLikes(id, increase);
     }
 
     @DeleteMapping("/HomEat/{id}")

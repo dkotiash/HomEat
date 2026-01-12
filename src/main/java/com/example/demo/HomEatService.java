@@ -38,24 +38,22 @@ public class HomEatService {
     }
 
     // 2. ADD THIS ANNOTATION
-    @Transactional
-    public Recipe updateLikes(Long id, boolean increase) {
+    @Transactional // <--- Hält die Verbindung offen
+    public RecipeDto updateLikes(Long id, boolean increase) {
         Recipe recipe = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rezept nicht gefunden"));
 
         int currentLikes = recipe.getLikes();
-
         if (increase) {
-            // Erhöhen
             recipe.setLikes(currentLikes + 1);
         } else {
-            // Verringern (aber nicht unter 0 gehen)
-            if (currentLikes > 0) {
-                recipe.setLikes(currentLikes - 1);
-            }
+            if (currentLikes > 0) recipe.setLikes(currentLikes - 1);
         }
 
-        return repo.save(recipe);
+        Recipe saved = repo.save(recipe);
+
+        // Umwandlung passiert HIER, solange die Transaktion offen ist!
+        return RecipeMapper.toDto(saved);
     }
 
     @Transactional
@@ -83,7 +81,7 @@ public class HomEatService {
         return RecipeMapper.toDto(saved);
     }
 
-
+    @Transactional
     public Recipe addReview(Long recipeId, Review review) {
         Recipe recipe = repo.findById(recipeId)
                 .orElseThrow(() -> new RuntimeException("Rezept nicht gefunden"));
