@@ -27,6 +27,8 @@ public class Recipe {
     // Wir setzen es standardmäßig auf 0, damit es nicht null ist
     private Integer likes = 0;
     // -----------------------------------------------
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Ingredients> ingredients = new ArrayList<>();
@@ -63,4 +65,18 @@ public class Recipe {
     public void setIngredients(List<Ingredients> ingredients) { this.ingredients = ingredients; }
     public Set<RecipeImage> getImages() { return images; }
     public void setImages(Set<RecipeImage> images) { this.images = images; }
+    // --- NEU: Getter und Setter für Reviews ---
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    // Hilfsmethode zum Hinzufügen (optional, aber praktisch)
+    public void addReview(Review review) {
+        this.reviews.add(review);
+    }
+    // ------------------------------------------
 }

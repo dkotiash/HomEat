@@ -36,38 +36,24 @@ public class HomEatService {
 
     // 2. ADD THIS ANNOTATION
     @Transactional
-    public Recipe updateRecipe(Long id, Recipe newRecipe) {
-        // SPIONAGE-LOGS: Was kommt hier eigentlich an?
-        System.out.println("Update für ID: " + id);
-        System.out.println("Neue Likes im Paket: " + newRecipe.getLikes());
+    public Recipe updateRecipe(Long id, Recipe updateData) {
+        // 1. Das existierende Rezept aus der Datenbank holen
+        Recipe existing = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Rezept nicht gefunden"));
 
-        return repo.findById(id)
-                .map(recipe -> {
-                    recipe.setTitle(newRecipe.getTitle());
-                    recipe.setDescription(newRecipe.getDescription());
-                    recipe.setIngredients(newRecipe.getIngredients());
-                    recipe.setOwnerId(newRecipe.getOwnerId());
+        // 2. NUR die Felder überschreiben, die man ändern darf
+        existing.setTitle(updateData.getTitle());
+        existing.setDescription(updateData.getDescription());
 
-                    // Bilder Update (Dein Code von vorhin)
-                    recipe.getImages().clear();
-                    if (newRecipe.getImages() != null) {
-                        newRecipe.getImages().forEach(img -> img.setRecipe(recipe));
-                        recipe.getImages().addAll(newRecipe.getImages());
-                    }
+        // Zutaten aktualisieren (etwas komplexer, aber einfachste Variante:)
+        if (updateData.getIngredients() != null) {
+            existing.setIngredients(updateData.getIngredients());
+        }
 
-                    // Likes Update
-                    if (newRecipe.getLikes() != null) {
-                        System.out.println("Setze Likes in DB auf: " + newRecipe.getLikes());
-                        recipe.setLikes(newRecipe.getLikes());
-                    } else {
-                        System.out.println("ACHTUNG: Likes im Paket waren NULL!");
-                    }
+        // WICHTIG: Wir fassen 'likes', 'ownerId' und 'images' hier NICHT an.
+        // Sie behalten also den Wert, den sie vorher in der Datenbank hatten.
 
-                    return repo.save(recipe);
-                })
-                .orElseGet(() -> {
-                    newRecipe.setId(id);
-                    return repo.save(newRecipe);
-                });
+        // 3. Speichern
+        return repo.save(existing);
     }
 }
