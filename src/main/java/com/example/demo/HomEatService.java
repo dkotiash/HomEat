@@ -82,13 +82,15 @@ public class HomEatService {
     }
 
     @Transactional
-    public Recipe addReview(Long recipeId, Review review) {
+    public RecipeDto addReview(Long recipeId, Review review) {
         Recipe recipe = repo.findById(recipeId)
                 .orElseThrow(() -> new RuntimeException("Rezept nicht gefunden"));
 
-        // Review verknüpfen
         recipe.addReview(review);
 
-        return repo.save(recipe);
+        Recipe saved = repo.save(recipe);
+
+        // Conversion happens HERE inside the transaction
+        return RecipeMapper.toDto(saved);
     }
 }

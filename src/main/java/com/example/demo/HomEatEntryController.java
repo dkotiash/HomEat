@@ -66,11 +66,12 @@ public class HomEatEntryController {
 
     @PostMapping("/HomEat/{id}/reviews")
     public RecipeDto addReview(@PathVariable Long id, @RequestBody ReviewDto reviewDto) {
-        // Umwandlung DTO -> Entity
+        // Convert the incoming DTO to an Entity
         Review review = new Review(reviewDto.getText(), reviewDto.getRating(), reviewDto.getAuthorName());
 
-        Recipe updated = service.addReview(id, review);
-        return RecipeMapper.toDto(updated);
+        // Call the service and return the result directly.
+        // DO NOT call RecipeMapper.toDto() here!
+        return service.addReview(id, review);
     }
 
 
