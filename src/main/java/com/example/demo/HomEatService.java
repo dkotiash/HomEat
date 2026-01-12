@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import com.example.demo.dto.RecipeDto;
+import com.example.demo.dto.RecipeMapper;
+import com.example.demo.recipe.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 // 1. ADD THIS IMPORT
@@ -36,24 +39,58 @@ public class HomEatService {
 
     // 2. ADD THIS ANNOTATION
     @Transactional
-    public Recipe updateRecipe(Long id, Recipe updateData) {
-        // 1. Das existierende Rezept aus der Datenbank holen
-        Recipe existing = repo.findById(id)
+    public Recipe updateLikes(Long id, boolean increase) {
+        Recipe recipe = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rezept nicht gefunden"));
 
-        // 2. NUR die Felder überschreiben, die man ändern darf
-        existing.setTitle(updateData.getTitle());
-        existing.setDescription(updateData.getDescription());
+        int currentLikes = recipe.getLikes();
 
-        // Zutaten aktualisieren (etwas komplexer, aber einfachste Variante:)
-        if (updateData.getIngredients() != null) {
-            existing.setIngredients(updateData.getIngredients());
+        if (increase) {
+            // Erhöhen
+            recipe.setLikes(currentLikes + 1);
+        } else {
+            // Verringern (aber nicht unter 0 gehen)
+            if (currentLikes > 0) {
+                recipe.setLikes(currentLikes - 1);
+            }
         }
 
-        // WICHTIG: Wir fassen 'likes', 'ownerId' und 'images' hier NICHT an.
-        // Sie behalten also den Wert, den sie vorher in der Datenbank hatten.
+        return repo.save(recipe);
+    }
+
+    @Transactional
+    public RecipeDto update(Long id, Recipe updateData) {
+        Recipe existing = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Rezept nicht gefunden: " + id));
+
+        // 1. Textfelder Update
+        if (updateData.getTitle() != null) existing.setTitle(updateData.getTitle());
+        if (updateData.getDescription() != null) existing.setDescription(updateData.getDescription());
+
+        // 2. Zutaten Update
+        if (updateData.getIngredients() != null) {
+            if (existing.getIngredients() == null) {
+                existing.setIngredients(new java.util.ArrayList<>());
+            }
+            existing.getIngredients().clear();
+            existing.getIngredients().addAll(updateData.getIngredients());
+        }
 
         // 3. Speichern
-        return repo.save(existing);
+        Recipe saved = repo.save(existing);
+
+        // 4. HIER wandeln wir um, solange die Transaktion noch offen ist!
+        return RecipeMapper.toDto(saved);
+    }
+
+
+    public Recipe addReview(Long recipeId, Review review) {
+        Recipe recipe = repo.findById(recipeId)
+                .orElseThrow(() -> new RuntimeException("Rezept nicht gefunden"));
+
+        // Review verknüpfen
+        recipe.addReview(review);
+
+        return repo.save(recipe);
     }
 }
