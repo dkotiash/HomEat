@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasItem;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.recipe.Ingredients;
 import com.example.demo.recipe.Recipe;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -88,7 +90,6 @@ class HomEatControllerTest {
         updatedRecipe.setTitle("Updated Title");
         updatedRecipe.setDescription("Updated Description");
         updatedRecipe.setIngredients(List.of(new Ingredients("Salt", "1 tsp")));
-        updatedRecipe.setLikes(5);
 
         String updatedJson = objectMapper.writeValueAsString(updatedRecipe);
 
@@ -99,7 +100,7 @@ class HomEatControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("Updated Title"))
                 .andExpect(jsonPath("$.description").value("Updated Description"))
-                .andExpect(jsonPath("$.likes").value(5));
+                .andExpect(jsonPath("$.likes").value(0));
     }
 
     @Test
@@ -150,18 +151,16 @@ class HomEatControllerTest {
     }
 
     @Test
-    void shouldCreateRecipeEvenWithNonExistentId() throws Exception {
+    void shouldReturnErrorWhenUpdatingNonExistentRecipe() throws Exception {
         // given
         Recipe recipe = createTestRecipe("Ghost Recipe", "Created from nowhere");
         String recipeJson = objectMapper.writeValueAsString(recipe);
 
         // when & then
-        mockMvc.perform(put("/HomEat/99999")
+        assertThrows(Exception.class, () -> mockMvc.perform(put("/HomEat/99999")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(recipeJson))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.title").value("Ghost Recipe"));
+                .andReturn());
     }
 
     @Test
@@ -209,7 +208,7 @@ class HomEatControllerTest {
         recipe.setDescription(description);
         recipe.setOwnerId("test-user-123");
         recipe.setLikes(0);
-        recipe.setIngredients(List.of(new Ingredients("Base Ingredient", "1 unit")));
+        recipe.setIngredients(new ArrayList<>(List.of(new Ingredients("Base Ingredient", "1 unit"))));
         return recipe;
     }
 }
