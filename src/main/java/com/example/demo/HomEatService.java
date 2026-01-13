@@ -1,15 +1,15 @@
 package com.example.demo;
 
-import com.example.demo.dto.RecipeDto;
-import com.example.demo.dto.RecipeMapper;
-import com.example.demo.recipe.Review;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-// 1. ADD THIS IMPORT
 import org.springframework.transaction.annotation.Transactional;
-import com.example.demo.recipe.Recipe;
 
-import java.util.List;
+import com.example.demo.dto.RecipeDto;
+import com.example.demo.dto.RecipeMapper;
+import com.example.demo.recipe.Recipe;
+import com.example.demo.recipe.Review;
 
 @Service
 public class HomEatService {
@@ -22,6 +22,9 @@ public class HomEatService {
     }
 
     public Recipe save(Recipe recipe) {
+        if (recipe.getLikes() == null) {
+            recipe.setLikes(0);
+        }
         return repo.save(recipe);
     }
 

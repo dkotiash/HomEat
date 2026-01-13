@@ -2,6 +2,7 @@
 .gradle/
 .gradle-cache/
 build/
+bin/
 .idea/
 .misc/.DS_Store
 .vscode/
