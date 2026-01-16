@@ -1,6 +1,5 @@
-package com.example.demo.recipe;
+package com.example.demo.entity;
 
-import com.example.demo.image.RecipeImage;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -23,10 +22,8 @@ public class Recipe {
 
     private String ownerId;
 
-    // --- NEU: HIER DAS FELD FÜR LIKES HINZUFÜGEN ---
-    // Wir setzen es standardmäßig auf 0, damit es nicht null ist
+
     private Integer likes = 0;
-    // -----------------------------------------------
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
@@ -39,7 +36,6 @@ public class Recipe {
 
     public Recipe() {}
 
-    // --- NEU: GETTER UND SETTER FÜR LIKES NICHT VERGESSEN ---
     public Integer getLikes() {
         return likes;
     }
@@ -47,15 +43,12 @@ public class Recipe {
     public void setLikes(Integer likes) {
         this.likes = likes;
     }
-    // --------------------------------------------------------
 
-    // ... deine existierenden Getter/Setter ...
     public Long getId() { return id; }
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-
     public String getOwnerId() { return ownerId; }
     public void setOwnerId(String ownerId) { this.ownerId = ownerId; }
     public void setId(Long id) {
@@ -65,18 +58,15 @@ public class Recipe {
     public void setIngredients(List<Ingredients> ingredients) { this.ingredients = ingredients; }
     public Set<RecipeImage> getImages() { return images; }
     public void setImages(Set<RecipeImage> images) { this.images = images; }
-    // --- NEU: Getter und Setter für Reviews ---
     public List<Review> getReviews() {
         return reviews;
     }
-
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
 
-    // Hilfsmethode zum Hinzufügen (optional, aber praktisch)
+
     public void addReview(Review review) {
         this.reviews.add(review);
     }
-    // ------------------------------------------
 }

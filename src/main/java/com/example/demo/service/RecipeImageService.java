@@ -1,7 +1,9 @@
-package com.example.demo.image;
+package com.example.demo.service;
 
-import com.example.demo.HomEatRepository;        // репозиторій для Recipe
-import com.example.demo.recipe.Recipe;            // твоя сутність Recipe
+import com.example.demo.repository.HomEatRepository;        // репозиторій для Recipe
+import com.example.demo.entity.Recipe;            // твоя сутність Recipe
+import com.example.demo.entity.RecipeImage;
+import com.example.demo.repository.RecipeImageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,13 +21,11 @@ public class RecipeImageService {
         this.recipeRepo = recipeRepo;
     }
 
-    // ===== ВИКЛИКАЄТЬСЯ КОНТРОЛЕРОМ: imageService.save(file)
     @Transactional
     public RecipeImage save(MultipartFile file) {
         return imageRepo.save(toEntity(null, file));
     }
 
-    // ===== ВИКЛИКАЄТЬСЯ КОНТРОЛЕРОМ: imageService.saveForRecipe(recipeId, file)
     @Transactional
     public RecipeImage saveForRecipe(Long recipeId, MultipartFile file) {
         Recipe recipe = recipeRepo.findById(recipeId)
@@ -33,20 +33,17 @@ public class RecipeImageService {
         return imageRepo.save(toEntity(recipe, file));
     }
 
-    // ===== Підвантаження байтів для GET /api/images/{id}
     @Transactional(readOnly = true)
     public RecipeImage get(Long id) {
         return imageRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Image not found: " + id));
     }
 
-    // ===== Видалення
     @Transactional
     public void delete(Long id) {
         imageRepo.deleteById(id);
     }
 
-    // ===== Мапер Multipart -> Entity
     private RecipeImage toEntity(Recipe recipe, MultipartFile file) {
         try {
             RecipeImage img = new RecipeImage();
@@ -54,7 +51,7 @@ public class RecipeImageService {
             img.setContentType(file.getContentType());
             img.setSize(file.getSize());
             img.setData(file.getBytes());
-            img.setRecipe(recipe);       // може бути null для "просто збереження"
+            img.setRecipe(recipe);
             return img;
         } catch (IOException e) {
             throw new RuntimeException("Cannot read uploaded file bytes", e);

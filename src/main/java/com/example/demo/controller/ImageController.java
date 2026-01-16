@@ -1,5 +1,7 @@
-package com.example.demo.image;
+package com.example.demo.controller;
 
+import com.example.demo.entity.RecipeImage;
+import com.example.demo.service.RecipeImageService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +14,7 @@ import com.example.demo.dto.ImageResponse;
 
 import java.time.Duration;
 
-@CrossOrigin(origins = {
-        "http://localhost:5173",
-        "https://frontendvue-homeat.onrender.com"
-})
+@CrossOrigin(origins = {"http://localhost:5173", "https://frontendvue-homeat.onrender.com"})
 @RestController
 @RequestMapping("/api")
 public class ImageController {
@@ -53,7 +52,6 @@ public class ImageController {
         );
     }
 
-    // важливо: транзакція активна у момент доступу до LAZY поля data
     @Transactional(readOnly = true)
     @GetMapping("/images/{id}")
     public ResponseEntity<byte[]> serve(@PathVariable Long id) {

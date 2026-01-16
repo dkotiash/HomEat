@@ -1,4 +1,4 @@
-package com.example.demo.recipe;
+package com.example.demo.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +15,6 @@ public class Review {
     private int rating;
     private String authorName;
 
-    // Leerer Konstruktor (Pflicht für Datenbank)
     public Review() {
     }
 
@@ -25,7 +24,6 @@ public class Review {
         this.authorName = authorName;
     }
 
-    // --- Getter und Setter ---
     public String getText() { return text; }
     public void setText(String text) { this.text = text; }
 

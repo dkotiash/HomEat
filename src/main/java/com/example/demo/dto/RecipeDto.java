@@ -10,12 +10,9 @@ public class RecipeDto {
     private List<ImageResponse> images;
     private String ownerId;
 
-    // --- NEU: Diese Felder müssen da sein ---
     private int likes;
     private List<ReviewDto> reviews;
-    // ---------------------------------------
 
-    // --- WICHTIG: Der Konstruktor muss GENAU zur Aufruf-Reihenfolge passen ---
     public RecipeDto(Long id, String title, String description,
                      List<IngredientDto> ingredients, List<ImageResponse> images,
                      String ownerId, int likes, List<ReviewDto> reviews) {
@@ -29,7 +26,6 @@ public class RecipeDto {
         this.reviews = reviews;
     }
 
-    // --- Getter und Setter ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

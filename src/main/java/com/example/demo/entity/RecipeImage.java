@@ -1,6 +1,5 @@
-package com.example.demo.image;
+package com.example.demo.entity;
 
-import com.example.demo.recipe.Recipe;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -28,7 +27,6 @@ public class RecipeImage {
 
     public RecipeImage() {}
 
-    // getters/setters
     public Long getId() { return id; }
     public String getFilename() { return filename; }
     public void setFilename(String filename) { this.filename = filename; }

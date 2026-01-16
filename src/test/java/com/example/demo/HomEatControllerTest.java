@@ -5,6 +5,8 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
+
+import com.example.demo.repository.HomEatRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.recipe.Ingredients;
-import com.example.demo.recipe.Recipe;
+import com.example.demo.entity.Ingredients;
+import com.example.demo.entity.Recipe;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -46,7 +48,17 @@ class HomEatControllerTest {
         repository.deleteAll();
     }
 
-    // ========== HAPPY PATH TESTS ==========
+    private Recipe createTestRecipe(String title, String description) {
+        Recipe recipe = new Recipe();
+        recipe.setTitle(title);
+        recipe.setDescription(description);
+        recipe.setOwnerId("test-user-123");
+        recipe.setLikes(0);
+        recipe.setIngredients(new ArrayList<>(List.of(new Ingredients("Base Ingredient", "1 unit"))));
+        return recipe;
+    }
+
+    // HAPPY PATH TESTS
 
     @Test
     void shouldReturnAllRecipes() throws Exception {
@@ -137,7 +149,7 @@ class HomEatControllerTest {
                 .andExpect(jsonPath("$[0].ingredients[1].name").value("Ground Beef"));
     }
 
-    // ========== SAD PATH TESTS ==========
+    // SAD PATH TESTS
 
     @Test
     void shouldReturnEmptyListWhenNoRecipesExist() throws Exception {
@@ -200,15 +212,5 @@ class HomEatControllerTest {
                 .andExpect(jsonPath("$.likes").value(0));
     }
 
-    // ========== HELPER METHOD ==========
 
-    private Recipe createTestRecipe(String title, String description) {
-        Recipe recipe = new Recipe();
-        recipe.setTitle(title);
-        recipe.setDescription(description);
-        recipe.setOwnerId("test-user-123");
-        recipe.setLikes(0);
-        recipe.setIngredients(new ArrayList<>(List.of(new Ingredients("Base Ingredient", "1 unit"))));
-        return recipe;
-    }
 }

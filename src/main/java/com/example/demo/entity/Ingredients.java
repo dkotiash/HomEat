@@ -1,4 +1,4 @@
-package com.example.demo.recipe;
+package com.example.demo.entity;
 
 import jakarta.persistence.Embeddable;
 import java.util.Objects;

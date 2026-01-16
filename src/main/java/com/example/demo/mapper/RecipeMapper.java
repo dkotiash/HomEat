@@ -1,11 +1,13 @@
-package com.example.demo.dto;
+package com.example.demo.mapper;
 
-import com.example.demo.recipe.Recipe;
-import com.example.demo.recipe.Ingredients;
-import com.example.demo.image.RecipeImage;
+import com.example.demo.dto.ImageResponse;
+import com.example.demo.dto.IngredientDto;
+import com.example.demo.dto.RecipeDto;
+import com.example.demo.dto.ReviewDto;
+import com.example.demo.entity.Recipe;
+import com.example.demo.entity.Ingredients;
+import com.example.demo.entity.RecipeImage;
 // Importiere deine Review Entity (Pfad ggf. anpassen, falls sie woanders liegt)
-import com.example.demo.recipe.Review;
-import com.example.demo.recipe.Review;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,22 +15,19 @@ import java.util.stream.Collectors;
 public class RecipeMapper {
 
     public static RecipeDto toDto(Recipe recipe) {
-        // 1. Zutaten mappen
         List<IngredientDto> ingDtos = recipe.getIngredients() == null
                 ? List.of()
                 : recipe.getIngredients().stream()
                 .map(RecipeMapper::toDto)
                 .collect(Collectors.toList());
 
-        // 2. Bilder mappen
         List<ImageResponse> imgResponses = recipe.getImages() == null
                 ? List.of()
                 : recipe.getImages().stream()
                 .map(RecipeMapper::toImageResponse)
                 .collect(Collectors.toList());
 
-        // 3. --- NEU: Bewertungen mappen ---
-        // Wir wandeln jede "Review"-Entity in ein "ReviewDto" um
+
         List<ReviewDto> reviewDtos = recipe.getReviews() == null
                 ? List.of()
                 : recipe.getReviews().stream()
@@ -38,9 +37,7 @@ public class RecipeMapper {
                         review.getAuthorName()
                 ))
                 .collect(Collectors.toList());
-        // ----------------------------------
 
-        // 4. DTO zurückgeben
         return new RecipeDto(
                 recipe.getId(),
                 recipe.getTitle(),
@@ -48,8 +45,8 @@ public class RecipeMapper {
                 ingDtos,
                 imgResponses,
                 recipe.getOwnerId(),
-                recipe.getLikes(), // Likes
-                reviewDtos         // <--- NEU: Die Liste der Bewertungen hier übergeben!
+                recipe.getLikes(),
+                reviewDtos
         );
     }
 

@@ -5,18 +5,15 @@ public class ReviewDto {
     private int rating;
     private String authorName;
 
-    // Leerer Konstruktor (wichtig für Frameworks)
     public ReviewDto() {
     }
 
-    // Konstruktor mit Daten (für deinen Mapper)
     public ReviewDto(String text, int rating, String authorName) {
         this.text = text;
         this.rating = rating;
         this.authorName = authorName;
     }
 
-    // --- Getter und Setter ---
     public String getText() {
         return text;
     }
